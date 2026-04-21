@@ -224,9 +224,6 @@
             transform: translateY(-3px);
             box-shadow: 0 12px 30px rgba(245, 101, 101, 0.5);
         }
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(245, 101, 101, 0.5);
-        }
         .status {
             padding: 20px 24px;
             background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
@@ -691,7 +688,7 @@
         </div>
 
         <!-- Lobby Section -->
-        <div class="section" id="lobbySection" class="hidden">
+        <div class="section hidden" id="lobbySection">
             <div style="text-align: center; margin-bottom: 40px;">
                 <h1 style="margin: 0 0 16px; font-size: 40px;">Game Lobby</h1>
                 <p style="color: #718096; margin: 0; font-size: 16px;">Waiting for players to join</p>
@@ -706,7 +703,7 @@
         </div>
 
         <!-- Game Section -->
-        <div class="section" id="gameSection" class="hidden">
+        <div class="section hidden" id="gameSection">
             <div style="text-align: center; margin-bottom: 40px;">
                 <h1 style="margin: 0 0 16px; font-size: 40px;">Game Started! 🎮</h1>
                 <p style="color: #718096; margin: 0; font-size: 16px;">The game is now in progress</p>
@@ -775,7 +772,7 @@
     </div>
     
     <div class="container">
-        <div class="section" id="finalResultsSection">
+        <div class="section hidden" id="finalResultsSection">
             <div style="text-align: center; margin-bottom: 30px;">
                 <h1 style="font-size: 38px; margin: 0; color: #2d3748;">Final Results</h1>
                 <p style="color: #4a5568; margin: 10px 0 0; font-size: 16px;">Top 3 players by balance</p>
@@ -993,6 +990,8 @@
             document.getElementById('setupSection').classList.add('hidden');
             document.getElementById('lobbySection').classList.add('hidden');
             document.getElementById('gameSection').classList.remove('hidden');
+            document.getElementById('quizSection').classList.remove('hidden');
+            document.getElementById('finalResultsSection').classList.add('hidden');
             document.getElementById('finalRoomCode').textContent = currentRoom;
             
             // Show leaderboard and market
@@ -1134,7 +1133,7 @@
             document.getElementById('setupSection').classList.remove('hidden');
             document.getElementById('lobbySection').classList.add('hidden');
             document.getElementById('gameSection').classList.add('hidden');
-            document.getElementById('finalResultsSection').classList.remove('visible');
+            document.getElementById('finalResultsSection').classList.add('hidden');
             document.getElementById('countdownTimer').textContent = '10:00';
             currentPlayer = null;
             currentRoom = null;
@@ -1164,7 +1163,7 @@
 
         async function endGame() {
             document.getElementById('gameSection').classList.add('hidden');
-            document.getElementById('finalResultsSection').classList.add('visible');
+            document.getElementById('finalResultsSection').classList.remove('hidden');
             document.getElementById('leaderboard').classList.add('hidden');
             document.getElementById('marketStatus').classList.add('hidden');
             document.getElementById('quizSection').classList.add('hidden');
@@ -1766,35 +1765,6 @@
                 }, 10000);
             }
         }
-
-        // Start quiz when game begins - override showGame to include quiz
-        const originalShowGameFunc = window.showGame;
-        window.showGame = function() {
-            document.getElementById('setupSection').classList.add('hidden');
-            document.getElementById('lobbySection').classList.add('hidden');
-            document.getElementById('gameSection').classList.remove('hidden');
-            document.getElementById('finalRoomCode').textContent = currentRoom;
-            
-            // Show leaderboard
-            document.getElementById('leaderboard').classList.remove('hidden');
-            updateLeaderboard();
-            
-            // Listen to player balance updates
-            const playersRef = ref(db, `rooms/${currentRoom}/players`);
-            onValue(playersRef, (snapshot) => {
-                const players = snapshot.val() || {};
-                updateLeaderboard();
-                
-                // Update current player balance display
-                if (players[currentPlayer.id]) {
-                    const balance = players[currentPlayer.id].balance || 1000;
-                    document.getElementById('currentBalance').textContent = `$${balance.toLocaleString()}`;
-                }
-            });
-            
-            // Start quiz after a short delay
-            setTimeout(() => showQuestion(), 500);
-        };
 
         console.log('Quiz system ready');
     </script>
