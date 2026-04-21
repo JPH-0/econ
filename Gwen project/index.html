@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-01WFM73VLY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-01WFM73VLY');
+</script>
+    <title>Economics Game</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(15, 32, 39, 0.98), rgba(32, 58, 67, 0.98));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0 40px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .logo-icon {
+            font-size: 28px;
+        }
+        
+        .logo-text {
+            letter-spacing: 1px;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+            padding-top: 70px;
+        }
+        
+        .container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            padding: 50px 60px 60px;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin: 0 0 20px;
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 45px;
+            border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 1px rgba(102, 126, 234, 0.2);
+            animation: slideUp 0.6s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            opacity: 1;
+        }
+        
+        .section.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .section {
+            animation: slideUp 0.6s ease-out;
+        }
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin: 0 0 50px;
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+        .section {
+            margin-bottom: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .section h2 {
+            color: #2d3748;
+            font-size: 13px;
+            margin: 0 0 24px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+        .input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        input {
+            flex: 1;
+            min-width: 150px;
+            padding: 16px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #f7fafc;
+        }
+        input:hover {
+            border-color: #cbd5e0;
+            background: white;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+        }
+        button {
+            padding: 16px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+            min-width: 120px;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
+        }
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 8px 20px rgba(72, 187, 120, 0.4);
+            font-size: 16px;
+            padding: 18px 28px;
+        }
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(72, 187, 120, 0.5);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            color: white;
+            width: 100%;
+            box-shadow: 0 8px 20px rgba(245, 101, 101, 0.4);
+            font-size: 16px;
+            padding: 18px 28px;
+        }
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(245, 101, 101, 0.5);
+        }
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 101, 101, 0.5);
+        }
+        .status {
+            padding: 20px 24px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            font-size: 16px;
+            border-left: 5px solid #cbd5e0;
+            animation: fadeIn 0.3s ease-out;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .status.waiting {
+            background: linear-gradient(135deg, #fffaf0 0%, #fffff0 100%);
+            color: #744210;
+            border-left-color: #ed8936;
+        }
+        .status.playing {
+            background: linear-gradient(135deg, #f0fff4 0%, #efffe0 100%);
+            color: #22543d;
+            border-left-color: #48bb78;
+        }
+        .room-code {
+            font-size: 28px;
+            font-weight: 700;
+            color: #667eea;
+            display: inline-block;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 14px 24px;
+            border-radius: 10px;
+            letter-spacing: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            border: 2px solid #cbd5e0;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        #playersList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        #playersList li {
+            padding: 20px 24px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            margin-bottom: 16px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+            min-height: 60px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        #playersList li:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+            transform: translateX(4px);
+        }
+        .player-name {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 18px;
+        }
+        .player-balance {
+            font-weight: 700;
+            color: #48bb78;
+            font-size: 18px;
+            min-width: 100px;
+            text-align: right;
+        }
+        .player-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Leaderboard */
+        #leaderboard {
+            background: linear-gradient(135deg, #edf2f7 0%, #f7fafc 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 2px solid #cbd5e0;
+        }
+        #leaderboard h2 {
+            margin-top: 0;
+            color: #2d3748;
+        }
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: white;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .leaderboard-item .rank {
+            font-weight: 700;
+            color: #667eea;
+            min-width: 30px;
+        }
+        .leaderboard-item .name {
+            flex: 1;
+            margin-left: 12px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        .leaderboard-item .balance {
+            font-weight: 700;
+            color: #48bb78;
+            min-width: 80px;
+            text-align: right;
+        }
+        
+        /* Target Selection Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        .modal-content h3 {
+            margin-top: 0;
+            color: #2d3748;
+        }
+        .modal-content p {
+            color: #718096;
+            margin: 0 0 20px;
+        }
+        .target-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .target-list li {
+            padding: 12px;
+            background: #f7fafc;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .target-list li:hover {
+            border-color: #667eea;
+            background: #edf2f7;
+            transform: translateX(4px);
+        }
+        .target-name {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        .target-balance {
+            color: #48bb78;
+            font-weight: 600;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .modal-buttons .btn-confirm {
+            background: #667eea;
+            color: white;
+        }
+        .modal-buttons .btn-confirm:hover {
+            background: #5568d3;
+        }
+        .modal-buttons .btn-cancel {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+        .modal-buttons .btn-cancel:hover {
+            background: #cbd5e0;
+        }
+        
+        /* Market Display */
+        #marketStatus {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 30px 0;
+            text-align: center;
+            border: 3px solid #ed8936;
+        }
+        #marketStatus h3 {
+            margin: 0 0 8px;
+            color: #7c2d12;
+            font-size: 16px;
+        }
+        .market-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .market-stat {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #ed8936;
+        }
+        .market-stat-label {
+            font-size: 12px;
+            color: #7c2d12;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .market-stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-top: 4px;
+        }
+        .market-multiplier {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ed8936;
+        }
+        
+        #roomInfo p {
+            color: #4a5568;
+            margin: 12px 0;
+            font-size: 17px;
+        }
+        .hidden {
+            display: none;
+        }
+        
+        /* Tablet and Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+            h1 {
+                font-size: 28px;
+            }
+            .section {
+                padding: 30px 20px;
+                margin-bottom: 30px;
+            }
+            .input-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            input {
+                min-width: unset;
+                font-size: 16px;
+                padding: 14px 16px;
+            }
+            button {
+                padding: 14px 20px;
+                font-size: 14px;
+                width: 100%;
+            }
+            .btn-primary {
+                flex: unset;
+                min-width: unset;
+            }
+            .section h2 {
+                font-size: 13px;
+                margin-bottom: 16px;
+            }
+            #playersList li {
+                padding: 16px 20px;
+                min-height: 50px;
+                margin-bottom: 12px;
+            }
+            .player-name {
+                font-size: 16px;
+            }
+            .player-badge {
+                padding: 4px 12px;
+                font-size: 11px;
+            }
+            .room-code {
+                font-size: 18px;
+                padding: 10px 16px;
+                letter-spacing: 2px;
+            }
+            #roomInfo p {
+                font-size: 15px;
+            }
+            .status {
+                font-size: 14px;
+                padding: 16px 20px;
+            }
+        }
+        
+        /* Mobile Phones */
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 16px;
+                overflow-y: auto;
+            }
+            h1 {
+                font-size: 24px !important;
+                margin-bottom: 16px !important;
+            }
+            .section {
+                padding: 24px 16px;
+                margin-bottom: 24px;
+                border-radius: 12px;
+            }
+            .input-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+            input {
+                padding: 13px 14px;
+                font-size: 16px;
+                border-radius: 8px;
+            }
+            button {
+                padding: 13px 16px;
+                font-size: 13px;
+                letter-spacing: 0.3px;
+            }
+            .section h2 {
+                font-size: 12px;
+                margin-bottom: 14px;
+                letter-spacing: 1.5px;
+            }
+            #playersList {
+                max-height: 300px;
+            }
+            #playersList li {
+                padding: 14px 16px;
+                margin-bottom: 10px;
+                min-height: 45px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .player-name {
+                font-size: 15px;
+            }
+            .player-badge {
+                align-self: flex-start;
+                padding: 3px 10px;
+                font-size: 10px;
+            }
+            .room-code {
+                font-size: 16px;
+                padding: 8px 12px;
+                letter-spacing: 1.5px;
+            }
+            #roomInfo p {
+                font-size: 14px;
+                margin: 10px 0;
+            }
+            .status {
+                font-size: 13px;
+                padding: 14px 16px;
+                margin-bottom: 16px;
+                border-left-width: 3px;
+            }
+            .section > div:first-child {
+                margin-bottom: 24px !important;
+            }
+            .section > div:first-child h1 {
+                font-size: 24px !important;
+            }
+        }
+        
+        /* Small Phones */
+        @media (max-width: 375px) {
+            .container {
+                padding: 24px 12px;
+            }
+            h1 {
+                font-size: 20px !important;
+            }
+            .section {
+                padding: 20px 14px;
+                margin-bottom: 20px;
+            }
+            input {
+                font-size: 16px;
+            }
+            button {
+                padding: 12px 14px;
+                font-size: 12px;
+            }
+            .room-code {
+                font-size: 14px;
+                letter-spacing: 1px;
+            }
+        }
+    </style>
+    <meta name="google-site-verification" content="XkHeYiMIKKk_S2RZlhyU0Q0ISImdlHvwOFswRiaWDWg" />
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-brand">
+            <span class="logo-icon">⚡</span>
+            <span class="logo-text">Economics Game!</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Setup Section -->
+        <div class="section" id="setupSection">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h1 style="margin: 0 0 16px; font-size: 40px;">Join a Game</h1>
+                <p style="color: #718096; margin: 0; font-size: 16px;">Enter your name and create or join a lobby</p>
+            </div>
+            <h2>Get Started</h2>
+            <input type="text" id="displayName" placeholder="Enter your display name" maxlength="20">
+            <div class="input-group">
+                <input type="text" id="roomCode" placeholder="Enter room code (leave empty to host)" maxlength="6" style="text-transform: uppercase;">
+                <button class="btn-primary" id="hostBtn">Host Game</button>
+                <button class="btn-primary" id="joinBtn">Join Game</button>
+            </div>
+        </div>
+
+        <!-- Lobby Section -->
+        <div class="section" id="lobbySection" class="hidden">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h1 style="margin: 0 0 16px; font-size: 40px;">Game Lobby</h1>
+                <p style="color: #718096; margin: 0; font-size: 16px;">Waiting for players to join</p>
+            </div>
+            <div class="status" id="lobbyStatus"></div>
+            <div id="roomInfo"></div>
+            <button class="btn-success hidden" id="startBtn">Start Game</button>
+            <button class="btn-danger" id="leaveBtn">Leave Lobby</button>
+            
+            <h2 style="margin-top: 30px;">Players (<span id="playerCount">0</span>) - Live Leaderboard</h2>
+            <ul id="playersList"></ul>
+        </div>
+
+        <!-- Game Section -->
+        <div class="section" id="gameSection" class="hidden">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h1 style="margin: 0 0 16px; font-size: 40px;">Game Started! 🎮</h1>
+                <p style="color: #718096; margin: 0; font-size: 16px;">The game is now in progress</p>
+            </div>
+            <p style="text-align: center; color: #4a5568; margin: 20px 0;">Room: <span class="room-code" id="finalRoomCode"></span></p>
+            <p style="text-align: center; margin: 0 0 20px; font-size: 16px; color: #2d3748;">
+                Time left: <span id="countdownTimer">10:00</span>
+            </p>
+            
+            <!-- Quiz Section -->
+            <div id="quizSection" style="margin-top: 30px;">
+                <div style="background: linear-gradient(135deg, #edf2f7 0%, #f7fafc 100%); padding: 30px; border-radius: 15px; margin-bottom: 20px;">
+                    <h2 id="questionNumber" style="color: #667eea; margin-top: 0;">Question 1</h2>
+                    <p id="questionText" style="font-size: 18px; color: #2d3748; margin: 20px 0; line-height: 1.6;"></p>
+                </div>
+                
+                <div id="answersContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <!-- Answer buttons will be inserted here -->
+                </div>
+                
+                <div id="feedbackSection" class="hidden" style="margin-top: 20px; padding: 20px; border-radius: 12px; text-align: center; font-size: 18px; font-weight: 600;">
+                </div>
+            </div>
+            
+            <!-- Market Status Display -->
+            <div id="marketStatus" class="hidden">
+                <h3>📊 Market Status</h3>
+                <div class="market-info">
+                    <div class="market-stat">
+                        <div class="market-stat-label">Market Status</div>
+                        <div class="market-stat-value" id="marketStatusText">Normal</div>
+                    </div>
+                    <div class="market-stat">
+                        <div class="market-stat-label">Price Multiplier</div>
+                        <div class="market-multiplier" id="marketMultiplierText">1.1x</div>
+                    </div>
+                    <div class="market-stat">
+                        <div class="market-stat-label">Your Crops</div>
+                        <div class="market-stat-value" id="playerCrops">0</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Menu (shown on correct answer) -->
+            <div id="actionMenu" class="hidden" style="background: linear-gradient(135deg, #f0fff4 0%, #efffe0 100%); padding: 30px; border-radius: 15px; text-align: center; border-left: 5px solid #48bb78;">
+                <h2 style="color: #22543d; margin-top: 0;">✅ Correct! Choose an Action</h2>
+                <p style="color: #22543d; margin: 10px 0 20px; font-size: 14px;">Your Current Balance: <strong id="currentBalance" style="color: #48bb78;">$1000</strong></p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                    <button id="investBtn" style="padding: 15px; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 14px; text-transform: uppercase;">Invest (+$200)</button>
+                    <button id="tradeBtn" style="padding: 15px; background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 14px; text-transform: uppercase;">Trade (+$150)</button>
+                    <button id="spendBtn" style="padding: 15px; background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 14px; text-transform: uppercase;">Spend (-$100)</button>
+                    <button id="buyBtn" style="padding: 15px; background: linear-gradient(135deg, #9f7aea 0%, #6b46c1 100%); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 14px; text-transform: uppercase;">Buy Crops ($100)</button>
+                    <button id="sellBtn" style="padding: 15px; background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 14px; text-transform: uppercase;">Sell Crops</button>
+                    <button id="stealBtn" style="padding: 15px; background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 14px; text-transform: uppercase;">Steal (Risky!)</button>
+                </div>
+            </div>
+            
+            <!-- Live Leaderboard -->
+            <div id="leaderboard" class="hidden">
+                <h2>💰 Live Leaderboard</h2>
+                <div id="leaderboardContent"></div>
+            </div>
+            
+            <button class="btn-danger" id="leaveGameBtn" style="margin-top: 30px;">Leave Game</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="section" id="finalResultsSection">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h1 style="font-size: 38px; margin: 0; color: #2d3748;">Final Results</h1>
+                <p style="color: #4a5568; margin: 10px 0 0; font-size: 16px;">Top 3 players by balance</p>
+            </div>
+            <div id="finalResultsList"></div>
+        </div>
+    </div>
+    
+    <!-- Target Selection Modal -->
+    <div id="targetModal" class="modal">
+        <div class="modal-content">
+            <h3>Select a Player to Steal From</h3>
+            <p>Choose your target wisely! 66% success rate, but get caught = -$400</p>
+            <ul class="target-list" id="targetList"></ul>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeTargetModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAS6ElsaX26OpuXQzrC9mbrT7uRZ7O-z2E",
+            authDomain: "economics-game-bcaa2.firebaseapp.com",
+            databaseURL: "https://economics-game-bcaa2-default-rtdb.firebaseio.com",
+            projectId: "economics-game-bcaa2",
+            storageBucket: "economics-game-bcaa2.firebasestorage.app",
+            messagingSenderId: "962324565788",
+            appId: "1:962324565788:web:f7c128bf00ab1e666eb4d9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // State
+        let currentPlayer = null;
+        let currentRoom = null;
+        let isHost = false;
+
+        // Generate random room code
+        function generateRoomCode() {
+            return Math.random().toString(36).substring(2, 8).toUpperCase();
+        }
+
+        // Host Game
+        document.getElementById('hostBtn').addEventListener('click', async () => {
+            const displayName = document.getElementById('displayName').value.trim();
+            if (!displayName) {
+                alert('Please enter a display name');
+                return;
+            }
+
+            const roomCode = generateRoomCode();
+            currentPlayer = { name: displayName, id: generateRoomCode() };
+            currentRoom = roomCode;
+            isHost = true;
+
+            try {
+                await set(ref(db, `rooms/${roomCode}`), {
+                    status: 'waiting',
+                    host: currentPlayer.id,
+                    createdAt: Date.now()
+                });
+
+                await set(ref(db, `rooms/${roomCode}/players/${currentPlayer.id}`), {
+                    name: displayName,
+                    isHost: true,
+                    balance: 1000,
+                    joinedAt: Date.now()
+                });
+
+                showLobby();
+            } catch (error) {
+                console.error('Error hosting game:', error);
+                alert('Failed to host game: ' + error.message);
+            }
+        });
+
+        // Join Game
+        document.getElementById('joinBtn').addEventListener('click', async () => {
+            const displayName = document.getElementById('displayName').value.trim();
+            const roomCode = document.getElementById('roomCode').value.trim().toUpperCase();
+
+            if (!displayName) {
+                alert('Please enter a display name');
+                return;
+            }
+            if (!roomCode) {
+                alert('Please enter a room code');
+                return;
+            }
+
+            currentPlayer = { name: displayName, id: generateRoomCode() };
+            currentRoom = roomCode;
+            isHost = false;
+
+            try {
+                const roomRef = ref(db, `rooms/${roomCode}`);
+                const roomSnapshot = await new Promise((resolve) => {
+                    onValue(roomRef, resolve, { onlyOnce: true });
+                });
+
+                if (!roomSnapshot.exists()) {
+                    alert('Room not found');
+                    return;
+                }
+
+                const roomData = roomSnapshot.val();
+                if (roomData.status === 'playing') {
+                    alert('Game already started');
+                    return;
+                }
+
+                await set(ref(db, `rooms/${roomCode}/players/${currentPlayer.id}`), {
+                    name: displayName,
+                    isHost: false,
+                    balance: 1000,
+                    joinedAt: Date.now()
+                });
+
+                showLobby();
+            } catch (error) {
+                console.error('Error joining game:', error);
+                alert('Failed to join game: ' + error.message);
+            }
+        });
+
+        // Show Lobby
+        function showLobby() {
+            document.getElementById('setupSection').classList.add('hidden');
+            document.getElementById('lobbySection').classList.remove('hidden');
+            document.getElementById('gameSection').classList.add('hidden');
+
+            // Show start button only for host
+            if (isHost) {
+                document.getElementById('startBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('startBtn').classList.add('hidden');
+            }
+
+            // Listen to room status
+            const roomRef = ref(db, `rooms/${currentRoom}`);
+            onValue(roomRef, (snapshot) => {
+                if (!snapshot.exists()) {
+                    showSetup();
+                    alert('Room has been deleted');
+                    return;
+                }
+
+                const roomData = snapshot.val();
+                updateLobbyUI(roomData);
+
+                if (roomData.status === 'playing') {
+                    showGame();
+                }
+            });
+
+            // Listen to players in room
+            const playersRef = ref(db, `rooms/${currentRoom}/players`);
+            onValue(playersRef, (snapshot) => {
+                const players = snapshot.val() || {};
+                const playerList = document.getElementById('playersList');
+                playerList.innerHTML = '';
+
+                Object.keys(players).forEach((playerId) => {
+                    const player = players[playerId];
+                    const li = document.createElement('li');
+                    const balance = player.balance || 1000;
+                    li.innerHTML = `
+                        <span class="player-name">${player.name}</span>
+                        <span class="player-balance" id="balance-${playerId}">$${balance.toLocaleString()}</span>
+                        ${player.isHost ? '<span class="player-badge">HOST</span>' : ''}
+                    `;
+                    playerList.appendChild(li);
+                });
+
+                document.getElementById('playerCount').textContent = Object.keys(players).length;
+            });
+        }
+
+        // Update Lobby UI
+        function updateLobbyUI(roomData) {
+            const statusEl = document.getElementById('lobbyStatus');
+            const roomInfoEl = document.getElementById('roomInfo');
+
+            if (roomData.status === 'waiting') {
+                statusEl.className = 'status waiting';
+                statusEl.textContent = '⏳ Waiting for players...';
+                roomInfoEl.innerHTML = `<p>Room Code: <span class="room-code">${currentRoom}</span></p><p>Share this code with other players to join.</p>`;
+            } else if (roomData.status === 'playing') {
+                statusEl.className = 'status playing';
+                statusEl.textContent = '▶️ Game is playing';
+            }
+        }
+
+        // Start Game
+        document.getElementById('startBtn').addEventListener('click', async () => {
+            try {
+                const gameEndAt = Date.now() + 10 * 60 * 1000;
+                await update(ref(db, `rooms/${currentRoom}`), {
+                    status: 'playing',
+                    gameEndAt
+                });
+            } catch (error) {
+                console.error('Error starting game:', error);
+                alert('Failed to start game: ' + error.message);
+            }
+        });
+
+        // Show Game
+        function showGame() {
+            document.getElementById('setupSection').classList.add('hidden');
+            document.getElementById('lobbySection').classList.add('hidden');
+            document.getElementById('gameSection').classList.remove('hidden');
+            document.getElementById('finalRoomCode').textContent = currentRoom;
+            
+            // Show leaderboard and market
+            document.getElementById('leaderboard').classList.remove('hidden');
+            document.getElementById('marketStatus').classList.remove('hidden');
+            updateLeaderboard();
+            
+            // Initialize market multiplier in Firebase if host
+            if (isHost) {
+                initializeMarket();
+                startMarketUpdater();
+            }
+            
+            // Initialize crops for this player
+            const playerRef = ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`);
+            onValue(playerRef, (snapshot) => {
+                const playerData = snapshot.val();
+                if (playerData && playerData.crops === undefined) {
+                    update(playerRef, { crops: 0 });
+                }
+            }, { onlyOnce: true });
+            
+            // Listen to player balance and crops updates
+            const playersRef = ref(db, `rooms/${currentRoom}/players`);
+            onValue(playersRef, (snapshot) => {
+                const players = snapshot.val() || {};
+                updateLeaderboard();
+                
+                // Update current player balance and crops display
+                if (players[currentPlayer.id]) {
+                    const balance = players[currentPlayer.id].balance || 1000;
+                    const crops = players[currentPlayer.id].crops || 0;
+                    document.getElementById('currentBalance').textContent = `$${balance.toLocaleString()}`;
+                    document.getElementById('playerCrops').textContent = crops;
+                }
+            });
+            
+            // Listen to market updates and countdown
+            const roomRef = ref(db, `rooms/${currentRoom}`);
+            onValue(roomRef, (snapshot) => {
+                const roomData = snapshot.val();
+                if (roomData) {
+                    if (roomData.marketMultiplier !== undefined) {
+                        updateMarketDisplay(roomData.marketMultiplier);
+                    }
+                    if (roomData.gameEndAt) {
+                        startCountdown(roomData.gameEndAt);
+                    }
+                    if (roomData.gameEndAt && Date.now() >= roomData.gameEndAt) {
+                        endGame();
+                    }
+                }
+            });
+
+            // Start quiz after a short delay
+            setTimeout(() => showQuestion(), 500);
+        }
+        
+        // Update leaderboard
+        function updateLeaderboard() {
+            const playersRef = ref(db, `rooms/${currentRoom}/players`);
+            onValue(playersRef, (snapshot) => {
+                const players = snapshot.val() || {};
+                const playerArray = Object.entries(players).map(([id, p]) => ({
+                    id,
+                    name: p.name,
+                    balance: p.balance || 1000
+                }));
+                
+                // Sort by balance descending
+                playerArray.sort((a, b) => b.balance - a.balance);
+                
+                const leaderboardContent = document.getElementById('leaderboardContent');
+                leaderboardContent.innerHTML = '';
+                
+                playerArray.forEach((player, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'leaderboard-item';
+                    div.innerHTML = `
+                        <span class="rank">#${index + 1}</span>
+                        <span class="name">${player.name}</span>
+                        <span class="balance">$${player.balance.toLocaleString()}</span>
+                    `;
+                    leaderboardContent.appendChild(div);
+                });
+            }, { onlyOnce: true });
+        }
+
+        // Leave Lobby
+        document.getElementById('leaveBtn').addEventListener('click', async () => {
+            try {
+                await remove(ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`));
+                
+                // If host, also delete the room
+                if (isHost) {
+                    remove(ref(db, `rooms/${currentRoom}`));
+                }
+                
+                showSetup();
+            } catch (error) {
+                console.error('Error leaving lobby:', error);
+                alert('Failed to leave lobby: ' + error.message);
+            }
+        });
+
+        // Leave Game
+        document.getElementById('leaveGameBtn').addEventListener('click', async () => {
+            try {
+                // Stop market updater if host
+                if (isHost && marketIntervalId) {
+                    clearInterval(marketIntervalId);
+                }
+                
+                await remove(ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`));
+                if (isHost) {
+                    remove(ref(db, `rooms/${currentRoom}`));
+                }
+                showSetup();
+            } catch (error) {
+                console.error('Error leaving game:', error);
+                alert('Failed to leave game: ' + error.message);
+            }
+        });
+
+        // Show Setup
+        let countdownIntervalId = null;
+
+        function showSetup() {
+            // Stop market updater if running
+            if (marketIntervalId) {
+                clearInterval(marketIntervalId);
+                marketIntervalId = null;
+            }
+            if (countdownIntervalId) {
+                clearInterval(countdownIntervalId);
+                countdownIntervalId = null;
+            }
+            
+            document.getElementById('setupSection').classList.remove('hidden');
+            document.getElementById('lobbySection').classList.add('hidden');
+            document.getElementById('gameSection').classList.add('hidden');
+            document.getElementById('finalResultsSection').classList.remove('visible');
+            document.getElementById('countdownTimer').textContent = '10:00';
+            currentPlayer = null;
+            currentRoom = null;
+            isHost = false;
+        }
+
+        function startCountdown(gameEndAt) {
+            if (countdownIntervalId) {
+                clearInterval(countdownIntervalId);
+            }
+            updateCountdown(gameEndAt);
+            countdownIntervalId = setInterval(() => updateCountdown(gameEndAt), 1000);
+        }
+
+        function updateCountdown(gameEndAt) {
+            const now = Date.now();
+            const remaining = Math.max(0, gameEndAt - now);
+            const minutes = String(Math.floor(remaining / 60000)).padStart(2, '0');
+            const seconds = String(Math.floor((remaining % 60000) / 1000)).padStart(2, '0');
+            document.getElementById('countdownTimer').textContent = `${minutes}:${seconds}`;
+            if (remaining <= 0) {
+                clearInterval(countdownIntervalId);
+                countdownIntervalId = null;
+                endGame();
+            }
+        }
+
+        async function endGame() {
+            document.getElementById('gameSection').classList.add('hidden');
+            document.getElementById('finalResultsSection').classList.add('visible');
+            document.getElementById('leaderboard').classList.add('hidden');
+            document.getElementById('marketStatus').classList.add('hidden');
+            document.getElementById('quizSection').classList.add('hidden');
+            document.getElementById('actionMenu').classList.add('hidden');
+
+            const players = await getAllPlayers();
+            const sortedPlayers = Object.entries(players)
+                .map(([id, player]) => ({ id, name: player.name, balance: player.balance || 1000 }))
+                .sort((a, b) => b.balance - a.balance);
+
+            const resultContainer = document.getElementById('finalResultsList');
+            resultContainer.innerHTML = '';
+
+            const medals = ['gold', 'silver', 'bronze'];
+            sortedPlayers.slice(0, 3).forEach((player, index) => {
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.innerHTML = `
+                    <div class="result-rank result-${medals[index]}">#${index + 1}</div>
+                    <div class="result-details">
+                        <div class="result-name">${player.name}</div>
+                        <div class="result-balance">$${player.balance.toLocaleString()}</div>
+                    </div>
+                `;
+                resultContainer.appendChild(card);
+            });
+
+            if (sortedPlayers.length === 0) {
+                resultContainer.innerHTML = '<p style="color:#4a5568; text-align:center;">No players found.</p>';
+            }
+        }
+
+        // ===== MONEY SYSTEM =====
+        
+        // Get all players in room
+        function getAllPlayers() {
+            return new Promise((resolve) => {
+                const playersRef = ref(db, `rooms/${currentRoom}/players`);
+                onValue(playersRef, (snapshot) => {
+                    const players = snapshot.val() || {};
+                    resolve(players);
+                }, { onlyOnce: true });
+            });
+        }
+        
+        // Get other players (not current player)
+        function getOtherPlayers() {
+            return new Promise((resolve) => {
+                getAllPlayers().then(players => {
+                    const otherPlayers = Object.entries(players)
+                        .filter(([id]) => id !== currentPlayer.id)
+                        .reduce((acc, [id, player]) => {
+                            acc[id] = player;
+                            return acc;
+                        }, {});
+                    resolve(otherPlayers);
+                });
+            });
+        }
+        
+        // Action Button Handlers
+        document.getElementById('investBtn').addEventListener('click', async () => {
+            try {
+                const currentBalance = (await new Promise((resolve) => {
+                    const playerRef = ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`);
+                    onValue(playerRef, (snapshot) => {
+                        resolve(snapshot.val()?.balance || 1000);
+                    }, { onlyOnce: true });
+                }));
+                
+                const newBalance = currentBalance + 200;
+                await update(ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`), {
+                    balance: newBalance
+                });
+                
+                showQuestion();
+            } catch (error) {
+                console.error('Error investing:', error);
+            }
+        });
+        
+        document.getElementById('tradeBtn').addEventListener('click', async () => {
+            try {
+                const currentBalance = (await new Promise((resolve) => {
+                    const playerRef = ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`);
+                    onValue(playerRef, (snapshot) => {
+                        resolve(snapshot.val()?.balance || 1000);
+                    }, { onlyOnce: true });
+                }));
+                
+                const newBalance = currentBalance + 150;
+                await update(ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`), {
+                    balance: newBalance
+                });
+                
+                showQuestion();
+            } catch (error) {
+                console.error('Error trading:', error);
+            }
+        });
+        
+        document.getElementById('spendBtn').addEventListener('click', async () => {
+            try {
+                const currentBalance = (await new Promise((resolve) => {
+                    const playerRef = ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`);
+                    onValue(playerRef, (snapshot) => {
+                        resolve(snapshot.val()?.balance || 1000);
+                    }, { onlyOnce: true });
+                }));
+                
+                const newBalance = Math.max(0, currentBalance - 100);
+                await update(ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`), {
+                    balance: newBalance
+                });
+                
+                showQuestion();
+            } catch (error) {
+                console.error('Error spending:', error);
+            }
+        });
+        
+        document.getElementById('stealBtn').addEventListener('click', async () => {
+            try {
+                const otherPlayers = await getOtherPlayers();
+                
+                if (Object.keys(otherPlayers).length === 0) {
+                    alert('No other players to steal from!');
+                    showQuestion();
+                    return;
+                }
+                
+                // Show target modal
+                const targetList = document.getElementById('targetList');
+                targetList.innerHTML = '';
+                
+                Object.entries(otherPlayers).forEach(([id, player]) => {
+                    const li = document.createElement('li');
+                    const balance = player.balance || 1000;
+                    li.innerHTML = `
+                        <span class="target-name">${player.name}</span>
+                        <span class="target-balance">$${balance.toLocaleString()}</span>
+                    `;
+                    li.onclick = () => executeSteal(id, player.name, balance);
+                    targetList.appendChild(li);
+                });
+                
+                document.getElementById('targetModal').classList.add('active');
+            } catch (error) {
+                console.error('Error initiating steal:', error);
+            }
+        });
+        
+        // Execute steal action
+        async function executeSteal(targetId, targetName, targetBalance) {
+            try {
+                closeTargetModal();
+                
+                const stealerBalance = (await new Promise((resolve) => {
+                    const playerRef = ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`);
+                    onValue(playerRef, (snapshot) => {
+                        resolve(snapshot.val()?.balance || 1000);
+                    }, { onlyOnce: true });
+                }));
+                
+                const successRate = Math.random();
+                let stealerNewBalance = stealerBalance;
+                let targetNewBalance = targetBalance;
+                let success = false;
+                let message = '';
+                
+                if (successRate < 0.66) {
+                    // Success! Steal $300
+                    success = true;
+                    stealerNewBalance = stealerBalance + 300;
+                    targetNewBalance = Math.max(0, targetBalance - 300);
+                    message = `🎯 Stole $300 from ${targetName}!`;
+                } else {
+                    // Caught! Lose $400
+                    success = false;
+                    stealerNewBalance = Math.max(0, stealerBalance - 400);
+                    targetNewBalance = targetBalance + 400;
+                    message = `🚔 Caught! Lost $400 to ${targetName}.`;
+                }
+                
+                // Update both players in Firebase
+                await update(ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`), {
+                    balance: stealerNewBalance
+                });
+                
+                await update(ref(db, `rooms/${currentRoom}/players/${targetId}`), {
+                    balance: targetNewBalance
+                });
+                
+                // Show result message
+                const feedbackEl = document.getElementById('feedbackSection');
+                feedbackEl.innerHTML = message;
+                feedbackEl.style.background = success ? 
+                    'linear-gradient(135deg, #f0fff4 0%, #efffe0 100%)' : 
+                    'linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%)';
+                feedbackEl.style.color = success ? '#22543d' : '#c53030';
+                feedbackEl.style.borderLeft = success ? '5px solid #48bb78' : '5px solid #f56565';
+                feedbackEl.classList.remove('hidden');
+                document.getElementById('quizSection').classList.add('hidden');
+                document.getElementById('actionMenu').classList.add('hidden');
+                
+                // Wait 3 seconds then show next question
+                setTimeout(() => {
+                    showQuestion();
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Error executing steal:', error);
+                alert('Error executing steal: ' + error.message);
+            }
+        }
+        
+        // Close target modal
+        function closeTargetModal() {
+            document.getElementById('targetModal').classList.remove('active');
+        }
+        
+        // ===== MARKET SYSTEM =====
+        let marketIntervalId = null;
+        
+        // Get market status text from multiplier
+        function getMarketStatus(multiplier) {
+            if (multiplier === 0.5) return 'CRASH 📉';
+            if (multiplier === 1.1) return 'Normal 📊';
+            if (multiplier === 2.0) return 'Boom! 🚀';
+            return 'Normal';
+        }
+        
+        // Initialize market in Firebase
+        async function initializeMarket() {
+            try {
+                await update(ref(db, `rooms/${currentRoom}`), {
+                    marketMultiplier: 1.1
+                });
+            } catch (error) {
+                console.error('Error initializing market:', error);
+            }
+        }
+        
+        // Update market display
+        function updateMarketDisplay(multiplier) {
+            const status = getMarketStatus(multiplier);
+            document.getElementById('marketStatusText').textContent = status;
+            document.getElementById('marketMultiplierText').textContent = multiplier.toFixed(1) + 'x';
+        }
+        
+        // Host updates market every 30 seconds
+        async function startMarketUpdater() {
+            // Update immediately
+            updateMarketRandomly();
+            
+            // Then every 30 seconds
+            marketIntervalId = setInterval(updateMarketRandomly, 30000);
+        }
+        
+        async function updateMarketRandomly() {
+            try {
+                const rand = Math.random();
+                let newMultiplier;
+                
+                if (rand < 0.33) {
+                    newMultiplier = 0.5;  // Crash
+                } else if (rand < 0.66) {
+                    newMultiplier = 1.1;  // Normal
+                } else {
+                    newMultiplier = 2.0;  // Boom
+                }
+                
+                await update(ref(db, `rooms/${currentRoom}`), {
+                    marketMultiplier: newMultiplier
+                });
+            } catch (error) {
+                console.error('Error updating market:', error);
+            }
+        }
+        
+        // Buy Crops action
+        document.getElementById('buyBtn').addEventListener('click', async () => {
+            try {
+                const playerRef = ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`);
+                const playerData = (await new Promise((resolve) => {
+                    onValue(playerRef, resolve, { onlyOnce: true });
+                })).val();
+                
+                const balance = playerData.balance || 1000;
+                const crops = playerData.crops || 0;
+                
+                if (balance < 100) {
+                    alert('Not enough money! Need $100');
+                    return;
+                }
+                
+                const newBalance = balance - 100;
+                const newCrops = crops + 1;
+                
+                await update(playerRef, {
+                    balance: newBalance,
+                    crops: newCrops
+                });
+                
+                showQuestion();
+            } catch (error) {
+                console.error('Error buying crops:', error);
+            }
+        });
+        
+        // Sell Crops action
+        document.getElementById('sellBtn').addEventListener('click', async () => {
+            try {
+                const roomRef = ref(db, `rooms/${currentRoom}`);
+                const roomData = (await new Promise((resolve) => {
+                    onValue(roomRef, resolve, { onlyOnce: true });
+                })).val();
+                
+                const multiplier = roomData.marketMultiplier || 1.1;
+                const sellPrice = Math.floor(100 * multiplier);
+                
+                const playerRef = ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`);
+                const playerData = (await new Promise((resolve) => {
+                    onValue(playerRef, resolve, { onlyOnce: true });
+                })).val();
+                
+                const balance = playerData.balance || 1000;
+                const crops = playerData.crops || 0;
+                
+                if (crops === 0) {
+                    alert('You have no crops to sell!');
+                    return;
+                }
+                
+                const newBalance = balance + sellPrice;
+                const newCrops = crops - 1;
+                
+                await update(playerRef, {
+                    balance: newBalance,
+                    crops: newCrops
+                });
+                
+                // Show sell result
+                const feedbackEl = document.getElementById('feedbackSection');
+                feedbackEl.innerHTML = `💰 Sold 1 crop for $${sellPrice}!`;
+                feedbackEl.style.background = 'linear-gradient(135deg, #f0fff4 0%, #efffe0 100%)';
+                feedbackEl.style.color = '#22543d';
+                feedbackEl.style.borderLeft = '5px solid #48bb78';
+                feedbackEl.classList.remove('hidden');
+                document.getElementById('quizSection').classList.add('hidden');
+                document.getElementById('actionMenu').classList.add('hidden');
+                
+                // Wait 2 seconds then show next question
+                setTimeout(() => {
+                    showQuestion();
+                }, 2000);
+            } catch (error) {
+                console.error('Error selling crops:', error);
+            }
+        });
+        
+        // ===== QUIZ SYSTEM =====
+        const questions = [
+            {
+                question: "What is the primary purpose of a central bank?",
+                options: ["To manage monetary policy and control inflation", "To directly invest in businesses", "To provide personal loans", "To operate retail stores"],
+                correct: 0
+            },
+            {
+                question: "Which of the following best defines GDP?",
+                options: ["Total government spending", "Total value of goods and services produced in a country", "Total exports minus imports", "Total personal income"],
+                correct: 1
+            },
+            {
+                question: "What happens to demand when the price of a good decreases?",
+                options: ["Demand decreases", "Demand increases", "Demand stays the same", "Supply increases"],
+                correct: 1
+            },
+            {
+                question: "Which economic system relies primarily on market forces?",
+                options: ["Command economy", "Planned economy", "Capitalist economy", "Subsistence economy"],
+                correct: 2
+            },
+            {
+                question: "What is inflation?",
+                options: ["A decrease in price levels", "An increase in prices over time", "A tax on imports", "A reduction in wages"],
+                correct: 1
+            },
+            {
+                question: "Which of the following is an example of a capital good?",
+                options: ["Food", "Clothing", "A factory machine", "Entertainment"],
+                correct: 2
+            },
+            {
+                question: "What is the law of supply?",
+                options: ["Higher prices lead to lower supply", "Higher prices lead to higher supply", "Supply never changes", "Supply depends on demand"],
+                correct: 1
+            },
+            {
+                question: "What does elasticity of demand measure?",
+                options: ["The quality of a product", "How responsive quantity demanded is to price changes", "The total revenue of a firm", "The profit margin"],
+                correct: 1
+            },
+            {
+                question: "Which of these is a microeconomic concept?",
+                options: ["National unemployment rate", "Price of a specific product", "Total government debt", "Exchange rates"],
+                correct: 1
+            },
+            {
+                question: "What is comparative advantage?",
+                options: ["Producing at a lower absolute cost", "Producing something more efficiently relative to alternatives", "Being the largest producer", "Having the most workers"],
+                correct: 1
+            },
+            {
+                question: "What causes a shift in the demand curve?",
+                options: ["A change in the price of the good", "A change in consumer preferences", "An increase in production costs", "A decrease in supply"],
+                correct: 1
+            },
+            {
+                question: "Which factor is NOT a factor of production?",
+                options: ["Land", "Labor", "Capital", "Money"],
+                correct: 3
+            },
+            {
+                question: "What is the primary role of interest rates in an economy?",
+                options: ["To increase inflation", "To encourage spending only", "To influence borrowing and saving decisions", "To directly control wages"],
+                correct: 2
+            },
+            {
+                question: "What is a recession?",
+                options: ["A period of economic growth", "A prolonged period of economic decline", "A temporary increase in prices", "A government policy"],
+                correct: 1
+            },
+            {
+                question: "Which of these is an example of a shortage?",
+                options: ["Excess supply of goods", "Quantity demanded exceeds quantity supplied", "Prices decrease", "Wages increase"],
+                correct: 1
+            },
+            {
+                question: "What does the term 'opportunity cost' mean?",
+                options: ["The price of a product", "The cost of an opportunity", "The value of the next best alternative foregone", "The cost of advertising"],
+                correct: 2
+            },
+            {
+                question: "Which is a characteristic of perfect competition?",
+                options: ["Few large firms", "Many small firms", "High barriers to entry", "Significant product differentiation"],
+                correct: 1
+            },
+            {
+                question: "What is the purpose of trade tariffs?",
+                options: ["To increase imports", "To protect domestic industries", "To reduce government revenue", "To lower consumer prices"],
+                correct: 1
+            },
+            {
+                question: "What is the multiplier effect in economics?",
+                options: ["An increase in taxes", "The chainreaction of spending and income", "A decrease in consumption", "Government spending only"],
+                correct: 1
+            },
+            {
+                question: "Which of the following is a fixed cost?",
+                options: ["Raw materials", "Factory rent", "Worker wages", "Electricity for production"],
+                correct: 1
+            },
+            {
+                question: "What is consumer surplus?",
+                options: ["Extra goods produced", "The difference between price paid and willingness to pay", "Total revenue minus costs", "Profit per unit"],
+                correct: 1
+            },
+            {
+                question: "Which economic indicator shows the general level of prices?",
+                options: ["GDP", "Consumer Price Index (CPI)", "Unemployment rate", "Exchange rate"],
+                correct: 1
+            },
+            {
+                question: "What is an externality?",
+                options: ["A cost to the government", "A side effect of production affecting third parties", "An international trade agreement", "A type of investment"],
+                correct: 1
+            },
+            {
+                question: "What does the Gini coefficient measure?",
+                options: ["Economic growth", "Income inequality", "Inflation rate", "Trade balance"],
+                correct: 1
+            },
+            {
+                question: "Which policy tool can the Federal Reserve use?",
+                options: ["Setting tax rates", "Adjusting interest rates", "Passing laws", "Allocating government spending"],
+                correct: 1
+            },
+            {
+                question: "What is venture capital?",
+                options: ["Government loans only", "Personal savings", "Investment in high-risk startups", "Money for real estate"],
+                correct: 2
+            },
+            {
+                question: "What does break-even point mean?",
+                options: ["Maximum profit", "Zero profit or loss", "Minimum price", "Highest production level"],
+                correct: 1
+            },
+            {
+                question: "Which is NOT a type of unemployment?",
+                options: ["Frictional", "Structural", "Cyclical", "Optimal"],
+                correct: 3
+            },
+            {
+                question: "What is asset allocation?",
+                options: ["Spending all money immediately", "Dividing investments among different assets", "Buying real estate only", "Saving in one account"],
+                correct: 1
+            },
+            {
+                question: "What does 'economies of scale' mean?",
+                options: ["Larger prices", "Lower costs per unit as production increases", "Fewer workers needed", "Higher inflation"],
+                correct: 1
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let isAnswering = false;
+
+        function showQuestion() {
+            // Reset UI
+            document.getElementById('quizSection').classList.remove('hidden');
+            document.getElementById('actionMenu').classList.add('hidden');
+            document.getElementById('feedbackSection').classList.add('hidden');
+            isAnswering = true;
+
+            // Pick random question
+            currentQuestionIndex = Math.floor(Math.random() * questions.length);
+            const q = questions[currentQuestionIndex];
+
+            // Display question
+            document.getElementById('questionNumber').textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+            document.getElementById('questionText').textContent = q.question;
+
+            // Create answer buttons
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+
+            q.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.style.cssText = `
+                    padding: 20px;
+                    background: linear-gradient(135deg, #edf2f7 0%, #f7fafc 100%);
+                    border: 2px solid #cbd5e0;
+                    border-radius: 10px;
+                    font-size: 15px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    color: #2d3748;
+                    grid-column: span 1;
+                `;
+
+                button.addEventListener('mouseover', () => {
+                    if (isAnswering) {
+                        button.style.borderColor = '#667eea';
+                        button.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.2)';
+                        button.style.transform = 'translateY(-2px)';
+                    }
+                });
+
+                button.addEventListener('mouseout', () => {
+                    button.style.borderColor = '#cbd5e0';
+                    button.style.boxShadow = 'none';
+                    button.style.transform = 'translateY(0)';
+                });
+
+                button.addEventListener('click', () => handleAnswer(index, q.correct));
+                container.appendChild(button);
+            });
+        }
+
+        function handleAnswer(selectedIndex, correctIndex) {
+            isAnswering = false;
+            const feedbackEl = document.getElementById('feedbackSection');
+            
+            if (selectedIndex === correctIndex) {
+                // Correct Answer - Show Action Menu
+                document.getElementById('quizSection').classList.add('hidden');
+                document.getElementById('actionMenu').classList.remove('hidden');
+            } else {
+                // Wrong Answer - Show "Turn Skipped"
+                feedbackEl.innerHTML = '❌ Turn Skipped! Next question in 10 seconds...';
+                feedbackEl.style.background = 'linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%)';
+                feedbackEl.style.color = '#c53030';
+                feedbackEl.style.borderLeft = '5px solid #f56565';
+                feedbackEl.classList.remove('hidden');
+
+                // Disable buttons
+                document.querySelectorAll('#answersContainer button').forEach(btn => {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
+                });
+
+                // Wait 10 seconds then show next question
+                setTimeout(() => {
+                    showQuestion();
+                }, 10000);
+            }
+        }
+
+        // Start quiz when game begins - override showGame to include quiz
+        const originalShowGameFunc = window.showGame;
+        window.showGame = function() {
+            document.getElementById('setupSection').classList.add('hidden');
+            document.getElementById('lobbySection').classList.add('hidden');
+            document.getElementById('gameSection').classList.remove('hidden');
+            document.getElementById('finalRoomCode').textContent = currentRoom;
+            
+            // Show leaderboard
+            document.getElementById('leaderboard').classList.remove('hidden');
+            updateLeaderboard();
+            
+            // Listen to player balance updates
+            const playersRef = ref(db, `rooms/${currentRoom}/players`);
+            onValue(playersRef, (snapshot) => {
+                const players = snapshot.val() || {};
+                updateLeaderboard();
+                
+                // Update current player balance display
+                if (players[currentPlayer.id]) {
+                    const balance = players[currentPlayer.id].balance || 1000;
+                    document.getElementById('currentBalance').textContent = `$${balance.toLocaleString()}`;
+                }
+            });
+            
+            // Start quiz after a short delay
+            setTimeout(() => showQuestion(), 500);
+        };
+
+        console.log('Quiz system ready');
+    </script>
+</body>
+</html>
+ 

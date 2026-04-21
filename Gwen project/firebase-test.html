@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Realtime Database Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #status {
+            font-size: 24px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="status">Connecting...</div>
+
+    <!-- Firebase CDN -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+        // Firebase config object
+        const firebaseConfig = {
+            apiKey: "AIzaSyAS6ElsaX26OpuXQzrC9mbrT7uRZ7O-z2E",
+            authDomain: "economics-game-bcaa2.firebaseapp.com",
+            databaseURL: "https://economics-game-bcaa2-default-rtdb.firebaseio.com",
+            projectId: "economics-game-bcaa2",
+            storageBucket: "economics-game-bcaa2.firebasestorage.app",
+            messagingSenderId: "962324565788",
+            appId: "1:962324565788:web:f7c128bf00ab1e666eb4d9"
+        };
+
+        // Function to initialize the app
+        function initializeFirebase() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                console.log('Firebase app initialized');
+                const database = getDatabase(app);
+                console.log('Database reference obtained');
+
+                // Check connection status
+                const connectedRef = ref(database, '.info/connected');
+                onValue(connectedRef, (snapshot) => {
+                    const isConnected = snapshot.val();
+                    console.log('Connection status:', isConnected);
+                    const statusElement = document.getElementById('status');
+                    if (isConnected) {
+                        statusElement.textContent = 'Connected';
+                        statusElement.style.color = 'green';
+                    } else {
+                        statusElement.textContent = 'Disconnected';
+                        statusElement.style.color = 'red';
+                    }
+                }, (error) => {
+                    console.error('Error listening to connection:', error);
+                    document.getElementById('status').textContent = 'Error: ' + error.message;
+                });
+            } catch (error) {
+                console.error('Firebase initialization error:', error);
+                document.getElementById('status').textContent = 'Init Error: ' + error.message;
+            }
+        }
+
+        // Initialize Firebase
+        initializeFirebase();
+    </script>
+</body>
+</html>
