@@ -354,6 +354,75 @@
             min-width: 80px;
             text-align: right;
         }
+
+        /* Final Results Podium */
+        #finalResultsList {
+            background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+            border-radius: 16px;
+            padding: 24px;
+            border: 2px solid #e2e8f0;
+        }
+        .podium {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            align-items: end;
+            min-height: 320px;
+        }
+        .podium-slot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: #1a202c;
+        }
+        .podium-name {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+        .podium-balance {
+            font-size: 14px;
+            font-weight: 700;
+            color: #4a5568;
+            margin-bottom: 12px;
+        }
+        .podium-block {
+            width: 100%;
+            border-radius: 14px 14px 0 0;
+            padding: 14px 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        .podium-rank {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+        .podium-first .podium-block {
+            height: 180px;
+            background: linear-gradient(180deg, #ffe680 0%, #f6c23e 100%);
+            color: #744210;
+        }
+        .podium-second .podium-block {
+            height: 135px;
+            background: linear-gradient(180deg, #f8fafc 0%, #cbd5e0 100%);
+            color: #2d3748;
+        }
+        .podium-third .podium-block {
+            height: 105px;
+            background: linear-gradient(180deg, #f3c6a0 0%, #cd7f32 100%);
+            color: #5c2b12;
+        }
+        .empty-results {
+            color: #4a5568;
+            text-align: center;
+            margin: 8px 0;
+        }
         
         /* Target Selection Modal */
         .modal {
@@ -1223,23 +1292,40 @@
             const resultContainer = document.getElementById('finalResultsList');
             resultContainer.innerHTML = '';
 
-            const medals = ['gold', 'silver', 'bronze'];
-            sortedPlayers.slice(0, 3).forEach((player, index) => {
-                const card = document.createElement('div');
-                card.className = 'result-card';
-                card.innerHTML = `
-                    <div class="result-rank result-${medals[index]}">#${index + 1}</div>
-                    <div class="result-details">
-                        <div class="result-name">${player.name}</div>
-                        <div class="result-balance">$${player.balance.toLocaleString()}</div>
-                    </div>
-                `;
-                resultContainer.appendChild(card);
-            });
-
             if (sortedPlayers.length === 0) {
-                resultContainer.innerHTML = '<p style="color:#4a5568; text-align:center;">No players found.</p>';
+                resultContainer.innerHTML = '<p class="empty-results">No players found.</p>';
+                return;
             }
+
+            const first = sortedPlayers[0];
+            const second = sortedPlayers[1];
+            const third = sortedPlayers[2];
+
+            resultContainer.innerHTML = `
+                <div class="podium">
+                    <div class="podium-slot podium-second">
+                        ${second ? `
+                            <div class="podium-name">${second.name}</div>
+                            <div class="podium-balance">$${second.balance.toLocaleString()}</div>
+                            <div class="podium-block"><span class="podium-rank">2</span></div>
+                        ` : ''}
+                    </div>
+                    <div class="podium-slot podium-first">
+                        ${first ? `
+                            <div class="podium-name">${first.name}</div>
+                            <div class="podium-balance">$${first.balance.toLocaleString()}</div>
+                            <div class="podium-block"><span class="podium-rank">1</span></div>
+                        ` : ''}
+                    </div>
+                    <div class="podium-slot podium-third">
+                        ${third ? `
+                            <div class="podium-name">${third.name}</div>
+                            <div class="podium-balance">$${third.balance.toLocaleString()}</div>
+                            <div class="podium-block"><span class="podium-rank">3</span></div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
         }
 
         // ===== MONEY SYSTEM =====
@@ -1412,7 +1498,8 @@
                 feedbackEl.style.color = success ? '#22543d' : '#c53030';
                 feedbackEl.style.borderLeft = success ? '5px solid #48bb78' : '5px solid #f56565';
                 feedbackEl.classList.remove('hidden');
-                document.getElementById('quizSection').classList.add('hidden');
+                document.getElementById('quizSection').classList.remove('hidden');
+                document.getElementById('answersContainer').innerHTML = '';
                 document.getElementById('actionMenu').classList.add('hidden');
                 
                 // Wait 3 seconds then show next question
