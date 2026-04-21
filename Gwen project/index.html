@@ -735,7 +735,6 @@
 <body>
     <div class="navbar">
         <div class="navbar-brand">
-            <span class="logo-icon">⚡</span>
             <span class="logo-text">Economics Game!</span>
         </div>
     </div>
@@ -854,7 +853,7 @@
     <div id="targetModal" class="modal">
         <div class="modal-content">
             <h3>Select a Player to Steal From</h3>
-            <p>Choose your target wisely! 66% success rate, but get caught = -$400</p>
+            <p>Choose your target wisely! 50% success rate, but get caught = -$400</p>
             <ul class="target-list" id="targetList"></ul>
             <div class="modal-buttons">
                 <button class="btn-cancel" onclick="closeTargetModal()">Cancel</button>
@@ -1466,7 +1465,7 @@
                 let success = false;
                 let message = '';
                 
-                if (successRate < 0.66) {
+                if (successRate < 0.5) {
                     // Success! Steal $300
                     success = true;
                     stealerNewBalance = stealerBalance + 300;
@@ -1477,7 +1476,7 @@
                     success = false;
                     stealerNewBalance = Math.max(0, stealerBalance - 400);
                     targetNewBalance = targetBalance + 400;
-                    message = ` Caught! Lost $400 to ${targetName}. Shame on ${targetName}!`;
+                    message = ` Caught! Lost $400 to ${targetName}. Shame on you!`;
                 }
                 
                 // Update both players in Firebase
@@ -1706,8 +1705,8 @@
             },
             {
                 question: "Who is the best teacher in the world?",
-                options: ["Mrs. Gwen", "Mrs. Gwen...", "Mrs. Gwen??", "Mrs. Gwen!!!"],
-                correct: [0,1,2,3]
+                options: ["????", "?", "??", "Mrs. Gwen!!!"],
+                correct: 3
             },
             {
                 question: "What causes a shift in the demand curve?",
