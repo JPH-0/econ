@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://economicsgame.onrender.com/sitemap.xml
