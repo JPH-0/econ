@@ -1368,18 +1368,32 @@
                 });
             });
         }
+
+        function getPlayerData(playerId = currentPlayer.id) {
+            return new Promise((resolve) => {
+                const playerRef = ref(db, `rooms/${currentRoom}/players/${playerId}`);
+                onValue(playerRef, (snapshot) => {
+                    resolve(snapshot.val() || {});
+                }, { onlyOnce: true });
+            });
+        }
+
+        function getActiveMoneyMultiplier(playerData) {
+            const now = Date.now();
+            if (playerData.multiplierEndsAt && playerData.multiplierEndsAt > now && playerData.moneyMultiplier) {
+                return playerData.moneyMultiplier;
+            }
+            return 1;
+        }
         
         // Action Button Handlers
         document.getElementById('investBtn').addEventListener('click', async () => {
             try {
-                const currentBalance = (await new Promise((resolve) => {
-                    const playerRef = ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`);
-                    onValue(playerRef, (snapshot) => {
-                        resolve(snapshot.val()?.balance || 1000);
-                    }, { onlyOnce: true });
-                }));
+                const playerData = await getPlayerData();
+                const currentBalance = playerData.balance || 1000;
+                const moneyMultiplier = getActiveMoneyMultiplier(playerData);
                 
-                const newBalance = currentBalance + 200;
+                const newBalance = currentBalance + (200 * moneyMultiplier);
                 await update(ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`), {
                     balance: newBalance
                 });
@@ -1392,14 +1406,11 @@
         
         document.getElementById('tradeBtn').addEventListener('click', async () => {
             try {
-                const currentBalance = (await new Promise((resolve) => {
-                    const playerRef = ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`);
-                    onValue(playerRef, (snapshot) => {
-                        resolve(snapshot.val()?.balance || 1000);
-                    }, { onlyOnce: true });
-                }));
+                const playerData = await getPlayerData();
+                const currentBalance = playerData.balance || 1000;
+                const moneyMultiplier = getActiveMoneyMultiplier(playerData);
                 
-                const newBalance = currentBalance + 150;
+                const newBalance = currentBalance + (150 * moneyMultiplier);
                 await update(ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`), {
                     balance: newBalance
                 });
@@ -1412,17 +1423,33 @@
         
         document.getElementById('spendBtn').addEventListener('click', async () => {
             try {
-                const currentBalance = (await new Promise((resolve) => {
-                    const playerRef = ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`);
-                    onValue(playerRef, (snapshot) => {
-                        resolve(snapshot.val()?.balance || 1000);
-                    }, { onlyOnce: true });
-                }));
+                const playerData = await getPlayerData();
+                const currentBalance = playerData.balance || 1000;
                 
                 const newBalance = Math.max(0, currentBalance - 100);
-                await update(ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`), {
-                    balance: newBalance
-                });
+                const wonMultiplier = Math.random() < 0.25;
+                const updatePayload = { balance: newBalance };
+
+                if (wonMultiplier) {
+                    updatePayload.moneyMultiplier = 10;
+                    updatePayload.multiplierEndsAt = Date.now() + 30000;
+                }
+
+                await update(ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`), updatePayload);
+
+                if (wonMultiplier) {
+                    const feedbackEl = document.getElementById('feedbackSection');
+                    feedbackEl.innerHTML = 'Lucky! 10x multiplier activated for 30 seconds!';
+                    feedbackEl.style.background = 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)';
+                    feedbackEl.style.color = '#1e3a8a';
+                    feedbackEl.style.borderLeft = '5px solid #2563eb';
+                    feedbackEl.classList.remove('hidden');
+                    document.getElementById('quizSection').classList.remove('hidden');
+                    document.getElementById('answersContainer').innerHTML = '';
+                    document.getElementById('actionMenu').classList.add('hidden');
+                    scheduleQuestion(2000);
+                    return;
+                }
                 
                 showQuestion();
             } catch (error) {
@@ -1466,12 +1493,9 @@
             try {
                 closeTargetModal();
                 
-                const stealerBalance = (await new Promise((resolve) => {
-                    const playerRef = ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`);
-                    onValue(playerRef, (snapshot) => {
-                        resolve(snapshot.val()?.balance || 1000);
-                    }, { onlyOnce: true });
-                }));
+                const stealerData = await getPlayerData();
+                const stealerBalance = stealerData.balance || 1000;
+                const moneyMultiplier = getActiveMoneyMultiplier(stealerData);
                 
                 const successRate = Math.random();
                 let stealerNewBalance = stealerBalance;
@@ -1482,9 +1506,10 @@
                 if (successRate < 0.5) {
                     // Success! Steal $300
                     success = true;
-                    stealerNewBalance = stealerBalance + 300;
-                    targetNewBalance = Math.max(0, targetBalance - 300);
-                    message = `Stole $300 from ${targetName}! `;
+                    const stealAmount = 300 * moneyMultiplier;
+                    stealerNewBalance = stealerBalance + stealAmount;
+                    targetNewBalance = Math.max(0, targetBalance - stealAmount);
+                    message = `Stole $${stealAmount} from ${targetName}! `;
                 } else {
                     // Caught! Lose $400
                     success = false;
@@ -1633,9 +1658,8 @@
                 const sellPrice = Math.floor(100 * multiplier);
                 
                 const playerRef = ref(db, `rooms/${currentRoom}/players/${currentPlayer.id}`);
-                const playerData = (await new Promise((resolve) => {
-                    onValue(playerRef, resolve, { onlyOnce: true });
-                })).val();
+                const playerData = await getPlayerData();
+                const moneyMultiplier = getActiveMoneyMultiplier(playerData);
                 
                 const balance = playerData.balance || 1000;
                 const crops = playerData.crops || 0;
@@ -1645,7 +1669,8 @@
                     return;
                 }
                 
-                const newBalance = balance + sellPrice;
+                const totalSellValue = sellPrice * moneyMultiplier;
+                const newBalance = balance + totalSellValue;
                 const newCrops = crops - 1;
                 
                 await update(playerRef, {
@@ -1655,7 +1680,7 @@
                 
                 // Show sell result
                 const feedbackEl = document.getElementById('feedbackSection');
-                feedbackEl.innerHTML = ` Sold 1 crop for $${sellPrice}!`;
+                feedbackEl.innerHTML = `Sold 1 crop for $${totalSellValue}!`;
                 feedbackEl.style.background = 'linear-gradient(135deg, #f0fff4 0%, #efffe0 100%)';
                 feedbackEl.style.color = '#22543d';
                 feedbackEl.style.borderLeft = '5px solid #48bb78';
