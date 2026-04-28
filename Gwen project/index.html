@@ -1055,7 +1055,7 @@
 
             if (roomData.status === 'waiting') {
                 statusEl.className = 'status waiting';
-                statusEl.textContent = '⏳ Waiting for players...';
+                statusEl.textContent = 'Waiting for players...';
                 roomInfoEl.innerHTML = `<p>Room Code: <span class="room-code">${currentRoom}</span></p><p>Share this code with other players to join.</p>`;
             } else if (roomData.status === 'playing') {
                 statusEl.className = 'status playing';
@@ -1452,7 +1452,7 @@
                 }
 
                 const feedbackEl = document.getElementById('feedbackSection');
-                feedbackEl.innerHTML = 'No multiplier this time (25% chance).';
+                feedbackEl.innerHTML = 'to bad No multiplier this time ¯\_(ツ)_/¯ (25% chance).';
                 feedbackEl.style.background = 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)';
                 feedbackEl.style.color = '#334155';
                 feedbackEl.style.borderLeft = '5px solid #94a3b8';
