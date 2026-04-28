@@ -1450,8 +1450,17 @@
                     scheduleQuestion(2000);
                     return;
                 }
-                
-                showQuestion();
+
+                const feedbackEl = document.getElementById('feedbackSection');
+                feedbackEl.innerHTML = 'No multiplier this time (25% chance).';
+                feedbackEl.style.background = 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)';
+                feedbackEl.style.color = '#334155';
+                feedbackEl.style.borderLeft = '5px solid #94a3b8';
+                feedbackEl.classList.remove('hidden');
+                document.getElementById('quizSection').classList.remove('hidden');
+                document.getElementById('answersContainer').innerHTML = '';
+                document.getElementById('actionMenu').classList.add('hidden');
+                scheduleQuestion(1200);
             } catch (error) {
                 console.error('Error spending:', error);
             }
@@ -1561,7 +1570,7 @@
         function getMarketStatus(multiplier) {
             if (multiplier === 0.5) return 'CRASH ';
             if (multiplier === 1.1) return 'Normal ';
-            if (multiplier === 2.0) return 'Boom! ';
+            if (multiplier === 2.0) return 'Bull Run';
             return 'Normal';
         }
         
