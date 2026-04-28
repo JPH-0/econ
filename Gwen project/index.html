@@ -1826,6 +1826,15 @@
 
         let currentQuestionIndex = 0;
         let isAnswering = false;
+        let questionQueue = [];
+
+        function refillQuestionQueue() {
+            questionQueue = Array.from({ length: questions.length }, (_, index) => index);
+            for (let i = questionQueue.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [questionQueue[i], questionQueue[j]] = [questionQueue[j], questionQueue[i]];
+            }
+        }
 
         function showQuestion() {
             // Reset UI
@@ -1834,12 +1843,16 @@
             document.getElementById('feedbackSection').classList.add('hidden');
             isAnswering = true;
 
-            // Pick random question
-            currentQuestionIndex = Math.floor(Math.random() * questions.length);
+            // Use each question once per cycle, then reshuffle
+            if (questionQueue.length === 0) {
+                refillQuestionQueue();
+            }
+            currentQuestionIndex = questionQueue.pop();
             const q = questions[currentQuestionIndex];
+            const cycleQuestionNumber = questions.length - questionQueue.length;
 
             // Display question
-            document.getElementById('questionNumber').textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+            document.getElementById('questionNumber').textContent = `Question ${cycleQuestionNumber} of ${questions.length}`;
             document.getElementById('questionText').textContent = q.question;
 
             // Create answer buttons
